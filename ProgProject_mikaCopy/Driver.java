@@ -2,18 +2,16 @@ import java.util.Scanner;
 public class Driver{
     public static void main(String[] args){
         Scanner input = new Scanner(System.in);
-        System.out.println("Please enter player 1's name: ");
-        String p1Name = input.nextLine();
+            System.out.println("Please enter player 1's name: ");
+                String p1Name = input.nextLine();
         Player player1 = new Player(p1Name);
-        System.out.println("Please enter player 2's name: ");
-        String p2Name = input.nextLine();
+            System.out.println("Please enter player 2's name: ");
+                String p2Name = input.nextLine();
         Player player2 = new Player(p2Name);
         Deck gameDeck = new Deck();
-        Deck p1Deck = player1.getDeck();
-        Deck p2Deck = player2.getDeck();
-        Deck sideDeck = new Deck();
-        int p1NumCards;
-        int p2NumCards;
+            Deck p1Deck = player1.getDeck();
+            Deck p2Deck = player2.getDeck();
+            Deck sideDeck = new Deck(54);
         //intro to game starts here
         System.out.println("Welcome " + p1Name + " & " + p2Name);
         System.out.println("Please press enter to shuffle and split the deck");
@@ -28,52 +26,54 @@ public class Driver{
             p2Deck.addToDeck(p2Card);
         }
         //this is where the game actually begins
-        System.out.println("The cards have now been shuffled and dealt.");
-        do{
-        p1NumCards = p1Deck.getNumCards();
-        p2NumCards = p2Deck.getNumCards();
-        System.out.println(p1Name + " please press enter to deal a card.");
-        input.nextLine();
-        Card p1Card = p1Deck.dealCard();
-        System.out.println("You dealt a " + p1Card.toString());
-        System.out.println(p2Name + " please press enter to deal a card.");
-        input.nextLine();
+        System.out.printf("The cards have now been shuffled and dealt.");
+        int p1NumCards = p1Deck.getNumCards();
+        int p2NumCards = p2Deck.getNumCards();
+        do  {
+        
+            p1NumCards = p1Deck.getNumCards();
+            p2NumCards = p2Deck.getNumCards();
+            System.out.println(p1Name+ " has "+ p1NumCards + " cards");
+            System.out.println(p2Name+ " has "+ p2NumCards + " cards");
+            System.out.println(p1Name + " please press enter to deal a card.");
+            input.nextLine();
+            Card p1Card = p1Deck.dealCard();
+            System.out.println("You dealt a " + p1Card.toString());
+            System.out.println(p2Name + " please press enter to deal a card.");
+            input.nextLine();
         Card p2Card = p2Deck.dealCard();
-        System.out.println("You dealt a " + p2Card.toString());
-            if(p1Card.getValue() > p2Card.getValue()){      //add cards to p1 deck if p1 wins
-                System.out.println(p1Name + " wins this round!");
-                p1Deck.addToDeck(p1Card);
-                p1Deck.addToDeck(p2Card);
-                p1NumCards++;
-                p2NumCards--;
-                if(sideDeck.getNumCards() > 0){             //check if side deck has cards and add to winning deck if so
-                    p1Deck.addWholeDeck(sideDeck);
-                    p1NumCards = p1NumCards + sideDeck.getNumCards();
-                }
+            System.out.println("You dealt a " + p2Card.toString());
+
+                if(p1Card.getValue() > p2Card.getValue()){      //add cards to p1 deck if p1 wins 
+                    p1Deck.addToDeck(p1Card);
+                    p1Deck.addToDeck(p2Card);
+                    if(sideDeck.getNumCards() > 0){
+                        p1Deck.addWholeDeck(sideDeck);
+                    }
+                        System.out.println(p1Name + " wins this round!");
+
             }
             else if(p1Card.getValue() < p2Card.getValue()){     //add cards to p2 deck if p2 wins
-                System.out.println(p2Name + " wins this round!");
                 p2Deck.addToDeck(p1Card);
                 p2Deck.addToDeck(p2Card);
-                p1NumCards--;
-                p2NumCards++;
-                if(sideDeck.getNumCards() > 0){         //check if side deck has cards and add to winning deck if so
-                    p2Deck.addWholeDeck(sideDeck);
-                    p2NumCards = p2NumCards + sideDeck.getNumCards();
-                }
+                if(sideDeck.getNumCards() > 0){
+                p2Deck.addWholeDeck(sideDeck);
+            }
+                    System.out.println(p2Name + " wins this round!");
+                
             }
             else{                                       //add cards to side deck if tie
-                System.out.println("This round is a tie!");
                 sideDeck.addToDeck(p1Card);
                 sideDeck.addToDeck(p2Card);
+                System.out.println("This round is a tie!");
+                
             }
         }
-        while(p1NumCards > 0 && p2NumCards > 0);
-
+        while(p1Deck.getNumCards() != 0 && p2Deck.getNumCards() != 0);
         if(p1NumCards == 0){
             System.out.println("Congratulations " + p2Name + " you won!");
         }
-        else if(p2NumCards == 0){
+        else{
             System.out.println("Congratulations " + p1Name + " you won!");
         }
 

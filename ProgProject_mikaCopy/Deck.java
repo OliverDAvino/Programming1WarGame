@@ -12,14 +12,14 @@ public Deck(){
     numCards = 54;
 
 
-for (int suit = 1; suit < 5; suit++){
-    for(int value = 1; value < 14; value++){
-        deck[index] = new Card(suit, value);
-        index++;
+    for (int suit = 1; suit < 5; suit++){
+        for(int value = 1; value < 14; value++){
+            deck[index] = new Card(suit, value);
+                index++;
+        }
     }
-}
-    deck[52] = new Joker(5, 13);
-    deck[53] = new Joker(5, 13);
+    deck[52] = new Joker(5, 14);
+    deck[53] = new Joker(5, 14);
 }
 
 public void shuffle(){
@@ -56,9 +56,9 @@ public void printDeck(){
 }
 public void addWholeDeck(Deck tempDeck){
     do{
-        tempDeck.addToDeck(dealCard());
+        addToDeck(tempDeck.dealCard());
     }
-    while(numCards > 0);
+    while(tempDeck.getNumCards() != 0);
 }
 public int getNumCards(){
     return numCards;
